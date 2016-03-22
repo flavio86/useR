@@ -45,9 +45,12 @@ def categorizar(imagem,nbits=8):
     return imagem
 
 print 'GLCM'
-path = 'C://Users//romue//Dropbox//Doutorado//base de imagens//smear2005//smear2005//New database pictures2//'
+
+path_read = " "
+path_write = " " 
+
 folders = ['carcinoma_in_situ', 'light_dysplastic', 'moderate_dysplastic', 'normal_columnar', 'normal_intermediate', 'normal_superficiel', 'severe_dysplastic']
-label = [1,1,1,0,0,0,1]
+label = [0,0,0,1,1,1,0]
 mask_type = 'masc_nuc'# {masc_nuc, masc_cyto, masc_junc}
 number_of_features = 5
 databaseSize = 917
@@ -59,20 +62,17 @@ D = range(1,12,2) #distance of GLCM 1..11
 for d in D:
     print d
     for x in folders:
-        arquivos_img = os.listdir(path+x)
-        arquivos_mask = os.listdir(path+x+'_masc//'+mask_type)
+        arquivos_img = os.listdir(path_read+x)
+        arquivos_mask = os.listdir(path_read+x+'_masc//'+mask_type)
         contMask = 0
-        print x
         for y in arquivos_img:
-            print y
             if (y[-3:] == 'bmp') | (y[-3:] == 'BMP'):
-                print arquivos_mask[contMask] 
                 #read and preprocessing original image
-                img = cv2.imread(path+x+'//'+y)
+                img = cv2.imread(path_read+x+'//'+y)
                 img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)  
                 
                 #read and preprocessing mask image    
-                mask = cv2.imread(path+x+'_masc//'+mask_type+'//'+arquivos_mask[contMask])
+                mask = cv2.imread(path_read+x+'_masc//'+mask_type+'//'+arquivos_mask[contMask])
                 mask = mask[:,:,0]
                 
                 grey = glcm(img,mask,grayLevel,d)
@@ -83,6 +83,5 @@ for d in D:
         labelCont = labelCont+1
     labelCont = 0
     cont = 0
-    file = 'C:/Users/romue/Dropbox/Berkeley/useR/glcm_isotropic_grays_'+str(grayLevel)+'_dist_'+str(d)+'_nuc.csv'
+    file = path_write + "glcm_isotropic_grays_"+str(grayLevel)+'_dist_'+str(d)+'_nuc.csv'
     np.savetxt(file,feature_vector, delimiter=",")
-#'''
