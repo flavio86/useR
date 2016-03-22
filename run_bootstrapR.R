@@ -6,7 +6,7 @@ library(RWeka)
 path = "C:\\Users\\flavio\\Desktop\\github\\"
 
 
-shape = read.csv(paste(path,"shapeFeatures.csv",sep = ""))
+shape = read.csv(paste(path,"shape_features.csv",sep = ""))
 firstOrder_texture = read.csv(paste(path,"firstOrder_texture.csv",sep = ""))
 glcm_isotopric = read.csv(paste(path,"glcm_isotropic.csv",sep = ""))
 
